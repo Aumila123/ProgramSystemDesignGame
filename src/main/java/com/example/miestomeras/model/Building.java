@@ -4,10 +4,10 @@ import com.example.miestomeras.game.City;
 
 public abstract class Building {
 
-    private String name;
-    private int cost;
-    private int maintenanceCost;
-    private String description;
+    private final String name;
+    private final int cost;
+    private final int maintenanceCost;
+    private final String description;
 
     public Building(String name, int cost, int maintenanceCost, String description) {
         this.name = name;
@@ -17,12 +17,6 @@ public abstract class Building {
     }
 
     public abstract void applyEffect(City city);
-
-    public String getInfo() {
-        return name + " - Cost: €" + cost +
-                ", Maintenance: €" + maintenanceCost + "/turn\n" +
-                description;
-    }
 
     public String getName() {
         return name;

@@ -6,7 +6,7 @@ import java.util.Random;
 public class EventManager {
 
     private static final int EVENT_CHANCE = 30;
-    private Random random;
+    private final Random random;
 
     public EventManager() {
         this.random = new Random();
@@ -22,22 +22,15 @@ public class EventManager {
     private Event generateRandomEvent() {
         int eventType = random.nextInt(6);
 
-        switch (eventType) {
-            case 0:
-                return new Fire();
-            case 1:
-                return new Protest();
-            case 2:
-                return new EconomicBoom();
-            case 3:
-                return new Epidemic();
-            case 4:
-                return new Festival();
-            case 5:
-                return new EconomicCrisis();
-            default:
-                return null;
-        }
+        return switch (eventType) {
+            case 0 -> new Fire();
+            case 1 -> new Protest();
+            case 2 -> new EconomicBoom();
+            case 3 -> new Epidemic();
+            case 4 -> new Festival();
+            case 5 -> new EconomicCrisis();
+            default -> null;
+        };
     }
 
     public String triggerEvent(City city) {

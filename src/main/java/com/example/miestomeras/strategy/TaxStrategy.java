@@ -13,6 +13,4 @@ public interface TaxStrategy {
     // Get expected income
     int getExpectedIncome(City city);
 
-    // Get happiness penalty
-    int getHappinessPenalty();
 }

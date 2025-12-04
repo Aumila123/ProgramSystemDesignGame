@@ -4,7 +4,6 @@ import com.example.miestomeras.model.*;
 
 public class BuildingFactory {
 
-    // Enum to define building types
     public enum BuildingType {
         HOSPITAL,
         SCHOOL,
@@ -14,34 +13,18 @@ public class BuildingFactory {
         MARKET
     }
 
-    // Factory method to create buildings
     public static Building createBuilding(BuildingType type) {
-        switch (type) {
-            case HOSPITAL:
-                return new Hospital();
-            case SCHOOL:
-                return new School();
-            case POLICE_STATION:
-                return new PoliceStation();
-            case PARK:
-                return new Park();
-            case PERSONS_HOME:
-                return new PersonsHome();
-            case MARKET:
-                return new Market();
-            default:
-                throw new IllegalArgumentException("Unknown building type: " + type);
-        }
+        return switch (type) {
+            case HOSPITAL -> new Hospital();
+            case SCHOOL -> new School();
+            case POLICE_STATION -> new PoliceStation();
+            case PARK -> new Park();
+            case PERSONS_HOME -> new PersonsHome();
+            case MARKET -> new Market();
+        };
     }
 
-    // Optional: Method to get all available building types
     public static BuildingType[] getAvailableTypes() {
         return BuildingType.values();
-    }
-
-    // Optional: Method to get building info without creating it
-    public static String getBuildingInfo(BuildingType type) {
-        Building building = createBuilding(type);
-        return building.getInfo();
     }
 }

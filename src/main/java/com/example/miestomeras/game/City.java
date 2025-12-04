@@ -16,12 +16,12 @@ public class City {
 
     private int population;
     private int budget;
-    private int happiness;  // 0-100
-    private int safety;     // 0-100
-    private int environment; // 0-100
+    private int happiness;
+    private int safety;
+    private int environment;
     private int turnNumber;
 
-    private List<Building> buildings;
+    private final List<Building> buildings;
 
     public City() {
         this.population = STARTING_POPULATION;
@@ -49,13 +49,6 @@ public class City {
             totalMaintenance += building.getMaintenanceCost();
         }
         budget -= totalMaintenance;
-    }
-
-    public void increaseTaxes() {
-        int taxIncome = (int)(population * 50);
-        budget += taxIncome;
-        happiness -= 30;
-        if (happiness < 0) happiness = 0;
     }
 
     public void applyTaxStrategy(TaxStrategy strategy) {
@@ -101,15 +94,13 @@ public class City {
     }
 
     public String getStatus() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("=== TURN ").append(turnNumber).append(" / ").append(WIN_TURNS).append(" ===\n");
-        sb.append("Population: ").append(population).append("\n");
-        sb.append("Budget: €").append(budget).append("\n");
-        sb.append("Happiness: ").append(happiness).append("%\n");
-        sb.append("Safety: ").append(safety).append("%\n");
-        sb.append("Environment: ").append(environment).append("%\n");
-        sb.append("Buildings: ").append(buildings.size()).append("\n");
-        return sb.toString();
+        return "=== TURN " + turnNumber + " / " + WIN_TURNS + " ===\n" +
+                "Population: " + population + "\n" +
+                "Budget: €" + budget + "\n" +
+                "Happiness: " + happiness + "%\n" +
+                "Safety: " + safety + "%\n" +
+                "Environment: " + environment + "%\n" +
+                "Buildings: " + buildings.size() + "\n";
     }
 
     public void displayStatus() {
@@ -118,10 +109,6 @@ public class City {
 
     public int getPopulation() {
         return population;
-    }
-
-    public void setPopulation(int population) {
-        this.population = population;
     }
 
     public int getBudget() {
@@ -146,20 +133,8 @@ public class City {
         return safety;
     }
 
-    public void setSafety(int safety) {
-        this.safety = safety;
-        if (this.safety > 100) this.safety = 100;
-        if (this.safety < 0) this.safety = 0;
-    }
-
     public int getEnvironment() {
         return environment;
-    }
-
-    public void setEnvironment(int environment) {
-        this.environment = environment;
-        if (this.environment > 100) this.environment = 100;
-        if (this.environment < 0) this.environment = 0;
     }
 
     public int getTurnNumber() {

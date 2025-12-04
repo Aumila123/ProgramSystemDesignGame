@@ -24,8 +24,4 @@ public class LowTaxStrategy implements TaxStrategy {
         return city.getPopulation() * TAX_PER_PERSON;
     }
 
-    @Override
-    public int getHappinessPenalty() {
-        return HAPPINESS_PENALTY;
-    }
 }

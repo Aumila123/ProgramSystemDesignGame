@@ -1,6 +1,7 @@
 package com.example.miestomeras.game;
 
 import com.example.miestomeras.model.Building;
+import com.example.miestomeras.strategy.TaxStrategy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,10 +52,14 @@ public class City {
     }
 
     public void increaseTaxes() {
-        int taxIncome = (int)(population * 50); // 50 euros per person
+        int taxIncome = (int)(population * 50);
         budget += taxIncome;
         happiness -= 30;
         if (happiness < 0) happiness = 0;
+    }
+
+    public void applyTaxStrategy(TaxStrategy strategy) {
+        strategy.applyTax(this);
     }
 
     public void decreaseExpenses() {

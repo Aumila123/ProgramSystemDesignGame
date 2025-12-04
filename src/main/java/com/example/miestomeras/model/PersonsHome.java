@@ -19,5 +19,4 @@ public class PersonsHome extends Building{
     public void applyEffect(City city) {
         city.modifyPopulation(POPULATION_BOOST);
     }
-
 }

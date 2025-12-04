@@ -4,7 +4,6 @@ import com.example.miestomeras.game.City;
 
 public class Hospital extends Building {
 
-    // Constants for Hospital effects
     private static final int HAPPINESS_BOOST = 5;
     private static final int SAFETY_BOOST = 3;
 

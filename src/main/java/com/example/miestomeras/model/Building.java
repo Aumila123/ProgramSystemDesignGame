@@ -24,7 +24,6 @@ public abstract class Building {
                 description;
     }
 
-    // Getters
     public String getName() {
         return name;
     }

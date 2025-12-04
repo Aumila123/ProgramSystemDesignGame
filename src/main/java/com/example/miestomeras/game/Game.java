@@ -2,6 +2,9 @@ package com.example.miestomeras.game;
 
 import com.example.miestomeras.model.*;
 import com.example.miestomeras.event.EventManager;
+import com.example.miestomeras.factory.BuildingFactory;
+import com.example.miestomeras.factory.BuildingFactory.BuildingType;
+import com.example.miestomeras.strategy.*;
 import java.util.Scanner;
 
 public class Game {
@@ -53,8 +56,7 @@ public class Game {
         System.out.println("4. Build Park (€300,000)");
         System.out.println("5. Build Homes (€500,000)");
         System.out.println("6. Build Market (€600,000)");
-        System.out.println("7. Increase Taxes (Get €" + (city.getPopulation() * 50) + ", Happiness -10%)");
-        System.out.println("8. Decrease Expenses (Save €200,000, Happiness -5%, Safety -5%)");
+        System.out.println("7. Tax Options");        System.out.println("8. Decrease Expenses (Save €200,000, Happiness -5%, Safety -5%)");
         System.out.println("9. End Turn (Do nothing)");
         System.out.println("0. Quit Game");
         System.out.print("\nYour choice: ");
@@ -64,38 +66,35 @@ public class Game {
         try {
             return scanner.nextInt();
         } catch (Exception e) {
-            scanner.nextLine(); // Clear invalid input
-            return -1; // Invalid choice
+            scanner.nextLine();
+            return -1;
         }
     }
 
-    // Process player's choice
     private void processChoice(int choice) {
-        Building building = null;
+        BuildingType buildingType = null;
 
         switch (choice) {
             case 1:
-                building = new Hospital();
+                buildingType = BuildingType.HOSPITAL;
                 break;
             case 2:
-                building = new School();
+                buildingType = BuildingType.SCHOOL;
                 break;
             case 3:
-                building = new PoliceStation();
+                buildingType = BuildingType.POLICE_STATION;
                 break;
             case 4:
-                building = new Park();
+                buildingType = BuildingType.PARK;
                 break;
             case 5:
-                building = new PersonsHome();
+                buildingType = BuildingType.PERSONS_HOME;
                 break;
             case 6:
-                building = new Market();
+                buildingType = BuildingType.MARKET;
                 break;
             case 7:
-                city.increaseTaxes();
-                System.out.println("\n✓ Taxes increased! Citizens are unhappy.");
-                endTurnWithEvents();
+                showTaxMenu();
                 return;
             case 8:
                 city.decreaseExpenses();
@@ -115,7 +114,8 @@ public class Game {
                 return;
         }
 
-        if (building != null) {
+        if (buildingType != null) {
+            Building building = BuildingFactory.createBuilding(buildingType);
             if (city.addBuilding(building)) {
                 System.out.println("\n✓ " + building.getName() + " built successfully!");
                 System.out.println("Effect: " + building.getDescription());
@@ -133,15 +133,54 @@ public class Game {
         if (eventMessage != null) {
             System.out.println("\n" + eventMessage);
             System.out.println("\nPress Enter to continue...");
-            scanner.nextLine(); // Wait for player to acknowledge
+            scanner.nextLine();
         }
     }
 
-    // Handle win condition
+    // Tax menu with different strategies
+    private void showTaxMenu() {
+        TaxStrategy lowTax = new LowTaxStrategy();
+        TaxStrategy normalTax = new NormalTaxStrategy();
+        TaxStrategy aggressiveTax = new AggressiveTaxStrategy();
+
+        System.out.println("\n--- TAX OPTIONS ---");
+        System.out.println("1. " + lowTax.getDescription() + " (Get €" + lowTax.getExpectedIncome(city) + ")");
+        System.out.println("2. " + normalTax.getDescription() + " (Get €" + normalTax.getExpectedIncome(city) + ")");
+        System.out.println("3. " + aggressiveTax.getDescription() + " (Get €" + aggressiveTax.getExpectedIncome(city) + ")");
+        System.out.println("0. Back to main menu");
+        System.out.print("\nYour choice: ");
+
+        int taxChoice = getPlayerChoice();
+
+        switch (taxChoice) {
+            case 1:
+                city.applyTaxStrategy(lowTax);
+                System.out.println("\n✓ Low taxes applied. Citizens are slightly unhappy.");
+                endTurnWithEvents();
+                break;
+            case 2:
+                city.applyTaxStrategy(normalTax);
+                System.out.println("\n✓ Normal taxes applied. Citizens are unhappy.");
+                endTurnWithEvents();
+                break;
+            case 3:
+                city.applyTaxStrategy(aggressiveTax);
+                System.out.println("\n✓ Aggressive taxes applied! Citizens are very unhappy!");
+                endTurnWithEvents();
+                break;
+            case 0:
+                System.out.println("\n✓ Returning to main menu...");
+                break;
+            default:
+                System.out.println("\n✗ Invalid choice!");
+                break;
+        }
+    }
+
     private void handleWin() {
         System.out.println("\n╔════════════════════════════════╗");
         System.out.println("║     CONGRATULATIONS!           ║");
-        System.out.println("║   YOU WON THE GAME! 🎉         ║");
+        System.out.println("║   YOU WON THE GAME!            ║");
         System.out.println("╚════════════════════════════════╝");
         System.out.println("\nYour city survived " + City.WIN_TURNS + " turns!");
         System.out.println("Final statistics:");
@@ -149,11 +188,10 @@ public class Game {
         gameRunning = false;
     }
 
-    // Handle lose condition
     private void handleLose() {
         System.out.println("\n╔════════════════════════════════╗");
         System.out.println("║       GAME OVER                ║");
-        System.out.println("║     YOU LOST! 😢               ║");
+        System.out.println("║     YOU LOST!                  ║");
         System.out.println("╚════════════════════════════════╝");
 
         if (city.getBudget() <= 0) {

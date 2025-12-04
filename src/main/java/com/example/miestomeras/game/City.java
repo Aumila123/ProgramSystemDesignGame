@@ -20,10 +20,16 @@ public class City {
     private int safety;
     private int environment;
     private int turnNumber;
+    private String name;
 
     private final List<Building> buildings;
 
     public City() {
+        this("NeverLand City");  // Call other constructor with default name
+    }
+
+    public City(String name) {
+        this.name = name;
         this.population = STARTING_POPULATION;
         this.budget = STARTING_BUDGET;
         this.happiness = STARTING_HAPPINESS;
@@ -94,7 +100,7 @@ public class City {
     }
 
     public String getStatus() {
-        return "=== TURN " + turnNumber + " / " + WIN_TURNS + " ===\n" +
+        return "=== " + name + " - TURN " + turnNumber + " / " + WIN_TURNS + " ===\n" +
                 "Population: " + population + "\n" +
                 "Budget: €" + budget + "\n" +
                 "Happiness: " + happiness + "%\n" +
@@ -140,6 +146,8 @@ public class City {
     public int getTurnNumber() {
         return turnNumber;
     }
+
+    public String getName() { return name; }
 
     public List<Building> getBuildings() {
         return buildings;

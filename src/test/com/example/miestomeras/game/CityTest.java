@@ -52,7 +52,6 @@ public class CityTest {
         city.setBudget(5000000);
         city.setHappiness(50);
 
-        // Simulate passing 10 turns
         for (int i = 0; i < 10; i++) {
             city.endTurn();
         }

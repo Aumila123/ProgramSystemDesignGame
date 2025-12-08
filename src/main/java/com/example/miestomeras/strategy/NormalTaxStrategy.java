@@ -23,5 +23,4 @@ public class NormalTaxStrategy implements TaxStrategy {
     public int getExpectedIncome(City city) {
         return city.getPopulation() * TAX_PER_PERSON;
     }
-
 }

@@ -22,7 +22,6 @@ public class TaxStrategyTest {
         TaxStrategy lowTax = new LowTaxStrategy();
         city.applyTaxStrategy(lowTax);
 
-        // Low tax: +25 per person, -3 happiness
         int expectedIncome = city.getPopulation() * 25;
         assertTrue(city.getBudget() > initialBudget);
         assertEquals(initialHappiness - 3, city.getHappiness());
@@ -36,7 +35,6 @@ public class TaxStrategyTest {
         TaxStrategy normalTax = new NormalTaxStrategy();
         city.applyTaxStrategy(normalTax);
 
-        // Normal tax: +50 per person, -10 happiness
         assertTrue(city.getBudget() > initialBudget);
         assertEquals(initialHappiness - 10, city.getHappiness());
     }
@@ -49,7 +47,6 @@ public class TaxStrategyTest {
         TaxStrategy aggressiveTax = new AggressiveTaxStrategy();
         city.applyTaxStrategy(aggressiveTax);
 
-        // Aggressive tax: +100 per person, -30 happiness
         assertTrue(city.getBudget() > initialBudget);
         assertEquals(initialHappiness - 30, city.getHappiness());
     }
@@ -59,6 +56,6 @@ public class TaxStrategyTest {
         TaxStrategy lowTax = new LowTaxStrategy();
 
         int expectedIncome = lowTax.getExpectedIncome(city);
-        assertEquals(7000 * 25, expectedIncome); // 7000 population * 25
+        assertEquals(7000 * 25, expectedIncome);
     }
 }
